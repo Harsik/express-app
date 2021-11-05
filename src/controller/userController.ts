@@ -6,7 +6,8 @@ const findUsers = (req: Request, res: Response) => {
     userService.findAll()
         .then((users) => {
             if (!users.length) return res.status(404).send({err: 'User not found'})
-            res.json(`find successfully: ${users}`)
+            // res.json(`find successfully: ${users}`)
+            res.json(users)
         })
         .catch(err => res.status(500).send(err))
 }
@@ -23,6 +24,8 @@ const findUser = (req: Request, res: Response) => {
 }
 
 const createUser = (req: Request, res: Response) => {
+    // req.body.username
+    console.log('body : ' + req.body.username)
     let userInput: IUserInputDTO = req.body
     userService.findByUsername(userInput).then((user) => {
         if (user) {
@@ -30,7 +33,7 @@ const createUser = (req: Request, res: Response) => {
         } else {
             userService.save(userInput).then((user) => {
                 // response.json(user)
-                res.status(202)
+                res.status(200)
             }).catch(err => res.status(500).json(err.message))
         }
     }).catch(err => {
